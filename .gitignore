@@ -1,2 +1,6 @@
 /node_modules
+/fabric-network
+/wallet
+/smart-contracts
+/connection
 .env

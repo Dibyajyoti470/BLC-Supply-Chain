@@ -11,15 +11,18 @@ const express = require("express");
 const app = express();
 
 const connectDB = require("./db/connect");
-const authenticateUser = require("./middleware/authentication");
 
 // routers
-const authRouter = require("./routes/auth");
-const orgRouter = require("./routes/org");
+// const authRouter = require("./routes/auth");
+// const orgRouter = require("./routes/org");
 
-// error handler
-const notFoundMiddleware = require("./middleware/not-found");
-const errorHandlerMiddleware = require("./middleware/error-handler");
+const { authRouter, orgRouter } = require("./routes");
+
+const {
+  authenticateUser,
+  routeNotFoundHandler,
+  errorHandler,
+} = require("./middlewares");
 
 app.use(express.json());
 app.use(helmet());
@@ -33,14 +36,15 @@ app.get("/api/v1", (req, res) => {
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/org", orgRouter);
-app.use(notFoundMiddleware);
-app.use(errorHandlerMiddleware);
+app.use(routeNotFoundHandler);
+app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
+    console.log("📗 Connected to MongoDB Atlas.");
     app.listen(port, console.log(`🚀 Server is listening on port ${port}...`));
   } catch (error) {
     console.log(error);
