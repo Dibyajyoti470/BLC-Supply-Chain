@@ -1,7 +1,11 @@
 const path = require("path");
 const { Wallets } = require("fabric-network");
 const { User } = require("../models");
-const { NotFoundError, BadRequestError } = require("../errors");
+const {
+  NotFoundError,
+  BadRequestError,
+  UnauthenticatedError,
+} = require("../errors");
 
 const verifyWallet = async (req, res, next) => {
   const { email, orgName } = req.body;
@@ -13,7 +17,6 @@ const verifyWallet = async (req, res, next) => {
   // Create a new file system based wallet for managing identities.
   const walletPath = path.join(process.cwd(), "wallet", user.orgId.name);
   const wallet = await Wallets.newFileSystemWallet(walletPath);
-  console.log(`Wallet path: ${walletPath}`);
 
   // Check to see if we've already enrolled the admin user.
   const identity = await wallet.get("admin");
@@ -23,6 +26,7 @@ const verifyWallet = async (req, res, next) => {
     );
   }
 
+  // Check to see if the user type is admin
   if (user.userType === "admin") {
     next();
     return;

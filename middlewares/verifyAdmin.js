@@ -10,7 +10,6 @@ const verifyUser = async (req, res, next) => {
   const admin = await User.find({
     $and: [{ orgId: orgId }, { userType: "admin" }],
   });
-  console.log(admin);
   if (admin.length !== 0) {
     throw new BadRequestError(
       `Organization ${org.name} has already an admin registered.`

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const FabricCAServices = require("fabric-ca-client");
 const { Wallets } = require("fabric-network");
-const { BadRequestError } = require("../errors");
+const { BadRequestError, NotFoundError } = require("../errors");
 
 const fabricEnrollAdmin = async (req, res, next) => {
   const { orgName } = req.body;

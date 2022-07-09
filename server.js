@@ -7,17 +7,16 @@ const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
 
+// express
 const express = require("express");
 const app = express();
 
 const connectDB = require("./db/connect");
 
 // routers
-// const authRouter = require("./routes/auth");
-// const orgRouter = require("./routes/org");
+const { authRouter, orgRouter, inventoryRouter } = require("./routes");
 
-const { authRouter, orgRouter } = require("./routes");
-
+// middlewares
 const {
   authenticateUser,
   routeNotFoundHandler,
@@ -36,6 +35,7 @@ app.get("/api/v1", (req, res) => {
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/org", orgRouter);
+app.use("/api/v1/inventory", inventoryRouter);
 app.use(routeNotFoundHandler);
 app.use(errorHandler);
 

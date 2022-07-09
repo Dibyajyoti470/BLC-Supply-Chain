@@ -23,6 +23,7 @@ const errorHandler = (err, req, res, next) => {
     customError.statusCode = 404;
   }
 
+  console.log(`❌ Error ${customError.statusCode}: `, customError.msg);
   return res.status(customError.statusCode).json({ msg: customError.msg });
 };
 
